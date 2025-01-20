@@ -73,8 +73,8 @@ jobs:
           include: Chickensoft.GameTools/Chickensoft.GameTools.csproj
 
       - name: 📦 Build
-        run: dotnet build \
-          Chickensoft.GameTools/Chickensoft.GameTools.csproj -c Release
+        working-directory: Chickensoft.GameTools
+        run: dotnet build -c Release
 
       - name: 🔎 Get Package Path
         id: package-path
