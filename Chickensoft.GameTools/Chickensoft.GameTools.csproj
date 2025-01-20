@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <LangVersion>preview</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
+    <CopyAllFiles>true</CopyAllFiles>
+    <RootNamespace>Chickensoft.GameTools</RootNamespace>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputPath>./nupkg</OutputPath>
+    <DebugType>portable</DebugType>
+    <NoWarn>NU1701</NoWarn>
+
+    <Title>GameTools</Title>
+    <Version>0.0.0-devbuild</Version>
+    <Description>A collection of tools for accelerating Godot + C# game development.</Description>
+    <Copyright>© 2024 Chickensoft</Copyright>
+    <Authors>Chickensoft</Authors>
+    <Company>Chickensoft</Company>
+
+    <PackageId>Chickensoft.GameTools</PackageId>
+    <PackageReleaseNotes>Chickensoft.GameTools release.</PackageReleaseNotes>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags />
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl></PackageProjectUrl>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl></RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="/" />
+    <None Include="../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="./icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Dependencies go here. -->
+    <PackageReference Include="IsExternalInit" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SauceControl.InheritDoc" Version="2.0.1" PrivateAssets="all" />
+    <PackageReference Include="GodotSharp" Version="4.2.2" />
+    <PackageReference Include="Chickensoft.Platform" Version="0.6.0-godot4.4.0-dev.7" />
+  </ItemGroup>
+</Project>
