@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Chickensoft.GameTools.Demo"
+run/main_scene="res://src/Main.tscn"
+config/features=PackedStringArray("4.4", "C#", "Mobile")
+config/icon="res://icon.png"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=720
+window/size/initial_position_type=3
+window/size/window_width_override=1280
+window/size/window_height_override=720
+
+[dotnet]
+
+project/assembly_name="Chickensoft.GameTools.Demo"
+
+[gui]
+
+theme/default_theme_scale=2.0
+theme/default_font_multichannel_signed_distance_field=true
+theme/default_font_generate_mipmaps=true
+
+[input]
+
+fullscreen_toggle={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":true,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194309,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+
+[rendering]
+
+renderer/rendering_method="mobile"
