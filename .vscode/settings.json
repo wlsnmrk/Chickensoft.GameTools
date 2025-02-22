@@ -9,6 +9,11 @@
     "editor.formatOnSave": true,
     "editor.formatOnType": false
   },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*": "$(capture).import, $(capture).uid",
+  },
   "csharp.semanticHighlighting.enabled": true,
   "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
   // Required to keep the C# language server from getting confused about which

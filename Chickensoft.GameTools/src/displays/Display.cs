@@ -72,8 +72,8 @@ public static class Display {
   internal static GetDisplayScaleFactorDelegate
     GetDisplayScaleFactorDefault { get; } =
       Displays.Singleton.GetDisplayScaleFactor;
-  internal static GetDisplayScaleFactorDelegate GetDisplayScaleFactor { get; set; } =
-    GetDisplayScaleFactorDefault;
+  internal static GetDisplayScaleFactorDelegate
+    GetDisplayScaleFactor { get; set; } = GetDisplayScaleFactorDefault;
 
   internal static GetDisplayNativeResolutionDelegate
     GetDisplayNativeResolutionDefault { get; } =
@@ -168,7 +168,7 @@ public static class Display {
 
     scaleInfo ??= window.GetWindowScaleInfo(themeResolution, isFullscreen);
     sizeInfo ??= GetWindowSizeInfo(
-      scaleInfo.Resolution,
+      scaleInfo.LogicalResolution,
       useProjectAspectRatio,
       minWindowedSize,
       maxWindowedSize
@@ -194,7 +194,7 @@ public static class Display {
           window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
         }
         else {
-          window.ContentScaleSize = scaleInfo.Resolution;
+          window.ContentScaleSize = scaleInfo.LogicalResolution;
           window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
           window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
         }
@@ -208,14 +208,13 @@ public static class Display {
     window.MaxSize = sizeInfo.MaxSize;
     window.CurrentScreen = screen;
 
-    window.Position = (scaleInfo.Resolution - window.Size) / 2;
+    window.Position = (scaleInfo.LogicalResolution - window.Size) / 2;
 
     // Required since the window sometimes ends up on another screen, possibly
     // due to virtual window coordinates.
     window.CurrentScreen = screen;
 
     window.Mode = targetMode;
-
 
     return new(scaleBehavior, scaleInfo, sizeInfo);
   }
@@ -242,8 +241,8 @@ public static class Display {
   ) {
     Vector2 screen = screenSize;
     // Figure out the minimum and maximum area of the screen we can use.
-    var minSize = (Vector2I)(screen * minWindowedSize).Round();
-    var maxSize = (Vector2I)(screen * maxWindowedSize).Round();
+    var minSize = (screen * minWindowedSize).Round();
+    var maxSize = (screen * maxWindowedSize).Round();
 
     var windowSize = maxSize;
     var windowMinSize = minSize;
@@ -258,7 +257,11 @@ public static class Display {
       windowMaxSize = windowMaxSize.Constrain(aspect, minSize, maxSize);
     }
 
-    return new(windowSize, windowMinSize, windowMaxSize);
+    return new(
+      (Vector2I)windowSize.Round(),
+      (Vector2I)windowMinSize.Round(),
+      (Vector2I)windowMaxSize.Round()
+    );
   }
 
   /// <summary>
@@ -270,12 +273,12 @@ public static class Display {
   /// <param name="minSize">Min size.</param>
   /// <param name="maxSize">Max size.</param>
   /// <returns></returns>
-  public static Vector2I Constrain(
-      this Vector2I size, float aspect, Vector2I minSize, Vector2I maxSize
+  public static Vector2 Constrain(
+      this Vector2 size, float aspect, Vector2 minSize, Vector2 maxSize
   ) {
     // First pass: try to match width
     var width = Mathf.Clamp(size.X, minSize.X, maxSize.X);
-    var height = (int)(width / aspect);
+    var height = width / aspect;
 
     // If that height is out of range, clamp it and recompute width
     if (height < minSize.Y) {
@@ -290,7 +293,7 @@ public static class Display {
     // Clamp and resize again to try and avoid overflow in the other dimension.
     width = Mathf.Clamp(width, minSize.X, maxSize.X);
 
-    return new(width, (int)(width / aspect));
+    return new(width, width / aspect);
   }
 
   /// <summary>
@@ -322,12 +325,12 @@ public static class Display {
     // Godot reports Windows' system scale factor, which may be different from
     // the monitor's scale factor since Godot does not opt-in to per-monitor DPI
     // awareness on Windows.
-    var systemDpi = DisplayServer.ScreenGetDpi(window.CurrentScreen);
+    var systemDpi = ScreenGetDpi(window.CurrentScreen);
     // Windows scale factor can be determined by dividing by 96.
     var systemScale = systemDpi / 96.0f;
     // Get the size of the window from Godot, which is going to be in the
     // system scale factor coordinate space.
-    var godotResolution = DisplayServer.ScreenGetSize(window.CurrentScreen);
+    var godotResolution = ScreenGetSize(window.CurrentScreen);
     var godotScale = ScreenGetScale(screen);
     // We need a ratio to correct from system scale to actual monitor scale
     var correctionFactor = 1f / (
@@ -356,7 +359,6 @@ public static class Display {
     // scale, but this at least gives them a common frame of reference.
     var contentScaleFactor = themeScale * correctionFactor;
 
-
     return new WindowScaleInfo(
       Screen: screen,
       SystemScale: systemScale,
@@ -368,7 +370,7 @@ public static class Display {
       ProjectViewportSize: ProjectViewportSize,
       ProjectWindowSize: ProjectWindowSize,
       NativeResolution: nativeResolution,
-      Resolution: godotResolution
+      LogicalResolution: godotResolution
     );
   }
 

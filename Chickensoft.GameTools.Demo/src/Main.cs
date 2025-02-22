@@ -12,7 +12,7 @@ public partial class Main : Control {
   public override void _Ready() {
     var window = GetWindow();
     var scaleInfo = window.GetWindowScaleInfo(Display.UHD4k);
-    var sizeInfo = Display.GetWindowSizeInfo(scaleInfo.Resolution);
+    var sizeInfo = Display.GetWindowSizeInfo(scaleInfo.LogicalResolution);
 
     window.ContentScaleFactor = scaleInfo.ContentScaleFactor;
     window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
@@ -32,7 +32,7 @@ public partial class Main : Control {
     window.Size = windowInfo.SizeInfo.Size;
 
     // center
-    window.Position = (windowInfo.ScaleInfo.Resolution - window.Size) / 2;
+    window.Position = (windowInfo.ScaleInfo.LogicalResolution - window.Size) / 2;
     window.CurrentScreen = windowInfo.ScaleInfo.Screen;
 
     WindowInfo = windowInfo;

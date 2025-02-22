@@ -14,7 +14,7 @@ public record WindowSizeInfo(
   /// <inheritdoc />
   public override string ToString() => $"""
   {nameof(Size)}: {Size},
-  {nameof(MinSize)}: {MinSize},
+  {nameof(MinSize)}: {MinSize}
   {nameof(MaxSize)}: {MaxSize}
   """;
 }

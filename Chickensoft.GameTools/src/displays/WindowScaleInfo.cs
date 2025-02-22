@@ -37,8 +37,8 @@ using Godot;
 /// <param name="NativeResolution">Native resolution of the monitor on macOS
 /// and Windows, as determined by CoreGraphics on macOS and Win32 API's on
 /// Windows.</param>
-/// <param name="Resolution">The resolution of the window, as determined by
-/// Godot. This is often the logical resolution and can be in an unintuitive
+/// <param name="LogicalResolution">The resolution of the window, as determined
+/// by Godot. This is often the logical resolution and can be in an unintuitive
 /// coordinate space if other monitors are involved or you're on macOS.
 /// </param>
 /// <param name="ProjectViewportSize">The viewport size as configured in the
@@ -56,7 +56,7 @@ public record WindowScaleInfo(
   Vector2I ProjectViewportSize,
   Vector2I ProjectWindowSize,
   Vector2I NativeResolution,
-  Vector2I Resolution
+  Vector2I LogicalResolution
 ) {
   /// <inheritdoc />
   public override string ToString() => $"""
@@ -70,6 +70,6 @@ public record WindowScaleInfo(
   {nameof(ProjectViewportSize)}: {ProjectViewportSize}
   {nameof(ProjectWindowSize)}: {ProjectWindowSize}
   {nameof(NativeResolution)}: {NativeResolution}
-  {nameof(Resolution)}: {Resolution}
+  {nameof(LogicalResolution)}: {LogicalResolution}
   """;
 }
