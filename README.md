@@ -109,7 +109,48 @@ For all possible values, check each enum type.
 
 ## 🖥️ Display Scaling & DPI Awareness
 
-GameTools can help you manage display scaling on desktop platforms by automatically guessing or computing the correct scale factor for the game window's screen. On macOS and Windows, it can determine the exact user-defined scale factor by leveraging [Chickensoft.Platform] to invoke the relevant system API's natively. For linux, it "guesses" the scale factor by using DPI and screen size checks almost identical to the ones found in the Godot editor.
+GameTools can help you manage display scaling on desktop platforms by automatically guessing or computing the correct scale factor for the game window's screen. On macOS and Windows, it can determine the exact user-defined scale factor by leveraging [Chickensoft.Platform] to invoke the relevant system API's natively.
+
+Check out the [demo project] which lets you select between both scaling behaviors and toggle fullscreen mode.
+
+## High-Level Scaling Behaviors
+
+Two high-level scaling behaviors are provided by GameTools. Both work well when windowed or full-screen and automatically correct for the scale factor of the screen that the window is on.
+
+### ✅ Proportional UI Scaling
+
+Scales the UI (and your game) down as the window shrinks. Everything remains the same size relative to each other, enabling you to create games for a specific resolution or highly custom visual style.
+
+![Proportional UI Scaling](docs/proportional_ui.gif)
+
+```csharp
+var info = GetWindow().LookGood(
+  WindowScaleBehavior.UIProportional,
+  BaseResolution,
+  isFullscreen: false // or true
+);
+```
+
+### ✅ Fixed UI Scaling
+
+Leaves the UI at a fixed size. You can easily configure your game to clip behind it or scale to fit the window using a [SubViewport]. For the demo, we've opted to configure the game to scale to fit the window while the UI remains unchanged.
+
+![Fixed UI Scaling](docs/fixed_ui.gif)
+
+```csharp
+var info = GetWindow().LookGood(
+  WindowScaleBehavior.UIFixed,
+  BaseResolution,
+  isFullscreen: true // or false
+);
+```
+
+> [!TIP]
+> For more on display scaling, check out Chickensoft's blog article titled [Display Scaling in Godot 4][display-scaling].
+  
+## Manual Scaling
+
+You can use the information provided by GameTools in your own scaling computations.
 
 ```csharp
 using Chickensoft.GameTools;
@@ -117,32 +158,16 @@ using Chickensoft.GameTools;
 public override void _Ready() {
   var window = GetWindow();
 
-  // Support high dpi screens:
+    var window = GetWindow();
+    var scaleInfo = window.GetWindowScaleInfo(Display.UHD4k);
+    var sizeInfo = Display.GetWindowSizeInfo(scaleInfo.LogicalResolution);
 
-  // Theme scale should be 1, 2, 3, or 4 for most platforms. It represents
-  // the size you defined the graphical theme assets at. A theme scale of 4
-  // would imply your assets were designed for a 4K display. This number is
-  // the same as the one you'd find in native mobile app development.
-  //
-  // See:
-  // Apple - https://developer.apple.com/design/human-interface-guidelines/images
-  // Google - https://developer.android.com/training/multiscreen/screendensities
+    window.ContentScaleFactor = scaleInfo.ContentScaleFactor;
+    // There are many other properties on scaleInfo, such as
+    // SystemScale, LogicalResolution, NativeResolution, DisplayScale, etc.
 
-  var scaleInfo = Display.GetWindowDpiScaleInfo(themeScale: 3);
-
-  // System scale factor, in case you need it
-  var systemScale = scaleInfo.SystemScale;
-
-  // New window size (it takes the window override size in your project 
-  // settings and scales it by the system scale factor for you)
-  window.Size = scaleInfo.WindowSize;
-
-  // It also computes the content scale factor required to scale the theme
-  // (typically downscaling it if you designed it at 3-4x, ensuring crispness):
-  window.ContentScaleFactor = scaleInfo.ContentScaleFactor;
-
-  // A high-resolution theme with the above approach is how to achieve
-  // beautiful, crisp graphics on a high DPI screen with no blurring. :)
+    // sizeInfo has a recommended size for the window and a recommended min and
+    // max size for the window. In case you can't be bothered to do all that.
 }
 ```
 
@@ -162,3 +187,6 @@ public override void _Ready() {
 [ResourceLoader]: https://docs.godotengine.org/en/stable/classes/class_resourceloader.html
 [Chickensoft.Platform]: https://github.com/chickensoft-games/Platform
 [Feature Tags]: https://docs.godotengine.org/en/stable/tutorials/export/feature_tags.html
+[SubViewport]: https://docs.godotengine.org/en/stable/classes/class_subviewport.html
+[demo project]: /Chickensoft.GameTools.Demo/src/
+[display-scaling]: https://chickensoft.games/blog/display-scaling

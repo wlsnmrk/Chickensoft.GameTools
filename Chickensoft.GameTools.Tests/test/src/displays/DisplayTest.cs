@@ -96,7 +96,7 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetWindowDpiScaleInfoWithReferenceSize() {
+  public void GetWindowScaleInfoWithReferenceSize() {
     var window = TestScene.GetWindow();
 
     Features.FakeOperatingSystem(OSFamily.macOS);
