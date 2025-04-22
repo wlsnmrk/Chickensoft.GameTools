@@ -147,7 +147,7 @@ var info = GetWindow().LookGood(
 
 > [!TIP]
 > For more on display scaling, check out Chickensoft's blog article titled [Display Scaling in Godot 4][display-scaling].
-  
+
 ## Manual Scaling
 
 You can use the information provided by GameTools in your own scaling computations.
@@ -175,11 +175,11 @@ public override void _Ready() {
 
 🐣 Package generated from a 🐤 Chickensoft Template — <https://chickensoft.games>
 
-[chickensoft-badge]: https://raw.githubusercontent.com/chickensoft-games/chickensoft_site/main/static/img/badges/chickensoft_badge.svg
+[chickensoft-badge]: https://chickensoft.games/img/badges/chickensoft_badge.svg
 [chickensoft-website]: https://chickensoft.games
-[discord-badge]: https://raw.githubusercontent.com/chickensoft-games/chickensoft_site/main/static/img/badges/discord_badge.svg
+[discord-badge]: https://chickensoft.games/img/badges/discord_badge.svg
 [discord]: https://discord.gg/gSjaPgMmYW
-[read-the-docs-badge]: https://raw.githubusercontent.com/chickensoft-games/chickensoft_site/main/static/img/badges/read_the_docs_badge.svg
+[read-the-docs-badge]: https://chickensoft.games/img/badges/read_the_docs_badge.svg
 [docs]: https://chickensoft.games/docsickensoft%20Discord-%237289DA.svg?style=flat&logo=discord&logoColor=white
 [line-coverage]: Chickensoft.GameTools.Tests/badges/line_coverage.svg
 [branch-coverage]: Chickensoft.GameTools.Tests/badges/branch_coverage.svg
