@@ -83,14 +83,25 @@ public static class Display {
     GetDisplayNativeResolution { get; set; } =
       GetDisplayNativeResolutionDefault;
 
-  internal static Vector2I ProjectWindowSize => new(
-    ProjectSettings.GetSetting(
-      "display/window/size/window_width_override"
-    ).AsInt32(),
-    ProjectSettings.GetSetting(
-      "display/window/size/window_height_override"
-    ).AsInt32()
-  );
+  internal static Vector2I ProjectWindowSize {
+    get {
+      var windowSize = new Vector2I(
+        ProjectSettings.GetSetting(
+          "display/window/size/window_width_override"
+        ).AsInt32(),
+        ProjectSettings.GetSetting(
+          "display/window/size/window_height_override"
+        ).AsInt32()
+      );
+      if (windowSize.X == 0 || windowSize.Y == 0) {
+        var viewportSize = ProjectViewportSize;
+        windowSize.X = windowSize.X == 0 ? viewportSize.X : windowSize.X;
+        windowSize.Y = windowSize.Y == 0 ? viewportSize.Y : windowSize.Y;
+      }
+      return windowSize;
+    }
+  }
+
 
   internal static Vector2I ProjectViewportSize => new(
     ProjectSettings.GetSetting("display/window/size/viewport_width").AsInt32(),
