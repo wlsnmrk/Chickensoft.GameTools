@@ -7,7 +7,8 @@ using Godot;
 /// <summary>
 /// A collection of methods for working with displays and high DPI scaling.
 /// </summary>
-public static class Display {
+public static class Display
+{
   /// <summary>
   /// 1280x720 resolution — The original "HD" resolution, but not what people
   /// usually think of as HD these days. See
@@ -70,21 +71,27 @@ public static class Display {
     ScreenGetDpiDefault;
 
   internal static GetDisplayScaleFactorDelegate
-    GetDisplayScaleFactorDefault { get; } =
+    GetDisplayScaleFactorDefault
+  { get; } =
       Displays.Singleton.GetDisplayScaleFactor;
   internal static GetDisplayScaleFactorDelegate
-    GetDisplayScaleFactor { get; set; } = GetDisplayScaleFactorDefault;
+    GetDisplayScaleFactor
+  { get; set; } = GetDisplayScaleFactorDefault;
 
   internal static GetDisplayNativeResolutionDelegate
-    GetDisplayNativeResolutionDefault { get; } =
+    GetDisplayNativeResolutionDefault
+  { get; } =
       Displays.Singleton.GetNativeResolution;
 
   internal static GetDisplayNativeResolutionDelegate
-    GetDisplayNativeResolution { get; set; } =
+    GetDisplayNativeResolution
+  { get; set; } =
       GetDisplayNativeResolutionDefault;
 
-  internal static Vector2I ProjectWindowSize {
-    get {
+  internal static Vector2I ProjectWindowSize
+  {
+    get
+    {
       var windowSize = new Vector2I(
         ProjectSettings.GetSetting(
           "display/window/size/window_width_override"
@@ -93,7 +100,8 @@ public static class Display {
           "display/window/size/window_height_override"
         ).AsInt32()
       );
-      if (windowSize.X == 0 || windowSize.Y == 0) {
+      if (windowSize.X == 0 || windowSize.Y == 0)
+      {
         var viewportSize = ProjectViewportSize;
         windowSize.X = windowSize.X == 0 ? viewportSize.X : windowSize.X;
         windowSize.Y = windowSize.Y == 0 ? viewportSize.Y : windowSize.Y;
@@ -113,7 +121,8 @@ public static class Display {
   /// </summary>
   /// <param name="screen">Screen index</param>
   /// <returns>Screen description.</returns>
-  public static string Describe(long screen) => screen switch {
+  public static string Describe(long screen) => screen switch
+  {
     DisplayServer.ScreenOfMainWindow => "[Screen of Main Window]",
     DisplayServer.ScreenPrimary => "[Primary Screen]",
     DisplayServer.ScreenWithKeyboardFocus => "[Screen with Keyboard Focus]",
@@ -174,7 +183,8 @@ public static class Display {
     bool useExclusiveFullscreen = true,
     float minWindowedSize = MIN_WINDOWED_SIZE,
     float maxWindowedSize = MAX_WINDOWED_SIZE
-  ) {
+  )
+  {
     var screen = window.CurrentScreen;
 
     scaleInfo ??= window.GetWindowScaleInfo(themeResolution, isFullscreen);
@@ -191,7 +201,8 @@ public static class Display {
 
     var targetMode = isFullscreen ? fs : Window.ModeEnum.Windowed;
 
-    switch (scaleBehavior) {
+    switch (scaleBehavior)
+    {
       case WindowScaleBehavior.UIFixed:
         window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
         window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
@@ -200,11 +211,13 @@ public static class Display {
 
       default:
       case WindowScaleBehavior.UIProportional:
-        if (isFullscreen) {
+        if (isFullscreen)
+        {
           window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
           window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
         }
-        else {
+        else
+        {
           window.ContentScaleSize = scaleInfo.LogicalResolution;
           window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
           window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
@@ -249,7 +262,8 @@ public static class Display {
     bool useProjectAspectRatio = true,
     float minWindowedSize = MIN_WINDOWED_SIZE,
     float maxWindowedSize = MAX_WINDOWED_SIZE
-  ) {
+  )
+  {
     Vector2 screen = screenSize;
     // Figure out the minimum and maximum area of the screen we can use.
     var minSize = (screen * minWindowedSize).Round();
@@ -259,7 +273,8 @@ public static class Display {
     var windowMinSize = minSize;
     var windowMaxSize = maxSize;
 
-    if (useProjectAspectRatio) {
+    if (useProjectAspectRatio)
+    {
       // Clamp screen down to the largest size that shares the same aspect
       // ratio as the project window size.
       var aspect = ProjectWindowSize.Aspect();
@@ -286,17 +301,20 @@ public static class Display {
   /// <returns></returns>
   public static Vector2 Constrain(
       this Vector2 size, float aspect, Vector2 minSize, Vector2 maxSize
-  ) {
+  )
+  {
     // First pass: try to match width
     var width = Mathf.Clamp(size.X, minSize.X, maxSize.X);
     var height = width / aspect;
 
     // If that height is out of range, clamp it and recompute width
-    if (height < minSize.Y) {
+    if (height < minSize.Y)
+    {
       height = minSize.Y;
       width = (int)(height * aspect);
     }
-    else if (height > maxSize.Y) {
+    else if (height > maxSize.Y)
+    {
       height = maxSize.Y;
       width = (int)(height * aspect);
     }
@@ -318,7 +336,8 @@ public static class Display {
   /// <returns>Window scale information.</returns>
   public static WindowScaleInfo GetWindowScaleInfo(
     this Window window, Vector2I themeResolution, bool isFullscreen = false
-  ) {
+  )
+  {
     // The native resolution (true resolution of the monitor) and Godot's
     // understanding of the monitor resolution on Windows can be different,
     // since Godot does not have per-monitor DPI awareness on Windows (yet).
@@ -402,19 +421,22 @@ public static class Display {
   /// the current screen (-1).</param>
   /// <returns>The best-guess scale factor, typically in the range of 1.0 to
   /// 2.0.</returns>
-  public static float GetAutoDisplayScale(int screen = -1) {
+  public static float GetAutoDisplayScale(int screen = -1)
+  {
     // Ported over from Godot's EditorSettings::get_auto_display_scale() method.
     // See editor/editor_settings.cpp in the Godot source code.
     // This uses various heuristics to "guess" the display scale the user might
     // want the application to use automatically.
 
-    if (Features.OperatingSystem is OSFamily.macOS or OSFamily.Android) {
+    if (Features.OperatingSystem is OSFamily.macOS or OSFamily.Android)
+    {
       return ScreenGetScale(screen);
     }
 
     var screenSize = ScreenGetSize(screen);
 
-    if (screenSize == Vector2I.Zero) {
+    if (screenSize == Vector2I.Zero)
+    {
       // Invalid screen size, skip.
       return 1.0f;
     }
@@ -426,11 +448,13 @@ public static class Display {
     if (
       ScreenGetDpi(screen) >= 192 &&
       smallestDimension >= 1400
-    ) {
+    )
+    {
       // hiDPI display.
       return 2.0f;
     }
-    else if (smallestDimension >= 1700) {
+    else if (smallestDimension >= 1700)
+    {
       // Likely a hiDPI display, but we aren't certain due to the returned DPI.
       // Use an intermediate scale to handle this situation.
       return 1.5f;

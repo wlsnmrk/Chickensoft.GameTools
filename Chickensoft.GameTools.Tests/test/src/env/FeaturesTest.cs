@@ -1,31 +1,34 @@
 namespace Chickensoft.GameTools.Tests.Environment;
 
-using Chickensoft.GoDotTest;
+using System;
+using System.Collections.Generic;
 using Chickensoft.GameTools.Environment;
+using Chickensoft.GoDotTest;
 using Godot;
 using Shouldly;
-using System.Collections.Generic;
-using System;
 
-public class FeaturesTest(Node testScene) : TestClass(testScene) {
+public class FeaturesTest(Node testScene) : TestClass(testScene)
+{
   private HashSet<string> _features = default!;
 
   [SetupAll]
-  public void SetupAll() {
+  public void SetupAll() =>
 #pragma warning disable IDE0200 // Not a useless lambda, doesn't work without it
     Features.HasFeature = (feature) => _features.Contains(feature);
 #pragma warning restore IDE0200
-  }
+
 
   [CleanupAll]
-  public void CleanupAll() {
+  public void CleanupAll()
+  {
     _features.Clear();
     Features.HasFeature = Features.HasFeatureDefault;
     Features.Reset();
   }
 
   [Test]
-  public void TestOperatingSystem() {
+  public void TestOperatingSystem()
+  {
     // win
     _features = [Features.WINDOWS];
     Features.GetOperatingSystem().ShouldBe(OSFamily.Windows);
@@ -79,7 +82,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestPlatform() {
+  public void TestPlatform()
+  {
     // web
     _features = [Features.WEB];
     Features.GetPlatform().ShouldBe(Platform.Web);
@@ -101,7 +105,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestInteractivityMode() {
+  public void TestInteractivityMode()
+  {
     // movie
     _features = [Features.MOVIE];
     Features.GetInteractivityMode().ShouldBe(InteractivityMode.MovieMode);
@@ -115,7 +120,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestBuildType() {
+  public void TestBuildType()
+  {
     // debug
     _features = [Features.DEBUG];
     Features.GetBuildType().ShouldBe(BuildType.Debug);
@@ -135,7 +141,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestToolEnvironment() {
+  public void TestToolEnvironment()
+  {
     // editor
     _features = [Features.EDITOR];
     Features.GetToolEnvironment().ShouldBe(ToolEnvironment.Editor);
@@ -155,7 +162,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestPrecision() {
+  public void TestPrecision()
+  {
     // double
     _features = [Features.DOUBLE];
     Features.GetPrecision().ShouldBe(Precision.Double);
@@ -175,7 +183,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestBitLength() {
+  public void TestBitLength()
+  {
     // 32
     _features = [Features.X32];
     Features.GetBitLength().ShouldBe(BitLength.X32);
@@ -195,7 +204,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestArchitecture() {
+  public void TestArchitecture()
+  {
     // x86
     _features = [Features.X86];
     Features.GetArchitecture().ShouldBe(Architecture.X86);
@@ -227,7 +237,8 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void TestTextureCompression() {
+  public void TestTextureCompression()
+  {
     // etc
     _features = [Features.ETC];
     Features.GetTextureCompression().ShouldBe(TextureCompression.Etc);
@@ -251,60 +262,67 @@ public class FeaturesTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void PrintFeatureDiagnostics() {
-    Features.PrintFeatureDiagnostics();
-  }
+  public void PrintFeatureDiagnostics() => Features.PrintFeatureDiagnostics();
 
   [Test]
-  public void FakeOperatingSystem() {
+  public void FakeOperatingSystem()
+  {
     Features.FakeOperatingSystem(OSFamily.Windows);
     Features.OperatingSystem.ShouldBe(OSFamily.Windows);
   }
 
   [Test]
-  public void FakePlatform() {
+  public void FakePlatform()
+  {
     Features.FakePlatform(Platform.Web);
     Features.Platform.ShouldBe(Platform.Web);
   }
 
   [Test]
-  public void FakeInteractivityMode() {
+  public void FakeInteractivityMode()
+  {
     Features.FakeInteractivityMode(InteractivityMode.MovieMode);
     Features.InteractivityMode.ShouldBe(InteractivityMode.MovieMode);
   }
 
   [Test]
-  public void FakeBuildType() {
+  public void FakeBuildType()
+  {
     Features.FakeBuildType(BuildType.Debug);
     Features.BuildType.ShouldBe(BuildType.Debug);
   }
 
   [Test]
-  public void FakeToolEnvironment() {
+  public void FakeToolEnvironment()
+  {
     Features.FakeToolEnvironment(ToolEnvironment.Editor);
     Features.ToolEnvironment.ShouldBe(ToolEnvironment.Editor);
   }
 
   [Test]
-  public void FakePrecision() {
+  public void FakePrecision()
+  {
     Features.FakePrecision(Precision.Double);
     Features.Precision.ShouldBe(Precision.Double);
   }
 
   [Test]
-  public void FakeBitLength() {
+  public void FakeBitLength()
+  {
     Features.FakeBitLength(BitLength.X32);
     Features.BitLength.ShouldBe(BitLength.X32);
   }
 
   [Test]
-  public void FakeArchitecture() {
+  public void FakeArchitecture()
+  {
     Features.FakeArchitecture(Architecture.X86);
     Features.Architecture.ShouldBe(Architecture.X86);
   }
 
   [Test]
-  public void FakeTextureCompression() {
+  public void FakeTextureCompression()
+  {
     Features.FakeTextureCompression(TextureCompression.Etc);
     Features.TextureCompression.ShouldBe(TextureCompression.Etc);
   }

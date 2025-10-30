@@ -11,7 +11,8 @@ public record WindowInfo(
   WindowScaleBehavior ScaleBehavior,
   WindowScaleInfo ScaleInfo,
   WindowSizeInfo SizeInfo
-) {
+)
+{
   /// <inheritdoc />
   public override string ToString() => $"""
   WindowInfo:

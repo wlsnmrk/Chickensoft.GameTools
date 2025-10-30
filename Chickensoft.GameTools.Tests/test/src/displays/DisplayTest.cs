@@ -6,11 +6,13 @@ using Chickensoft.GoDotTest;
 using Godot;
 using Shouldly;
 
-public class DisplayTest(Node testScene) : TestClass(testScene) {
+public class DisplayTest(Node testScene) : TestClass(testScene)
+{
   public Vector2I ThemeResolution { get; } = new(3840, 2160);
 
   [Cleanup]
-  public void Cleanup() {
+  public void Cleanup()
+  {
     Display.GetDisplayNativeResolution =
       Display.GetDisplayNativeResolutionDefault;
 
@@ -23,7 +25,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void Constants() {
+  public void Constants()
+  {
     Display.HD.ShouldBe(new Vector2I(1280, 720));
     Display.FullHD.ShouldBe(new Vector2I(1920, 1080));
     Display.QHD.ShouldBe(new Vector2I(2560, 1440));
@@ -33,7 +36,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetWindowScaleInfoMacOS() {
+  public void GetWindowScaleInfoMacOS()
+  {
     var window = TestScene.GetWindow();
 
     Features.FakeOperatingSystem(OSFamily.macOS);
@@ -63,7 +67,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetWindowScaleInfoWindows() {
+  public void GetWindowScaleInfoWindows()
+  {
     var window = TestScene.GetWindow();
 
     Features.FakeOperatingSystem(OSFamily.Windows);
@@ -96,7 +101,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetWindowScaleInfoWithReferenceSize() {
+  public void GetWindowScaleInfoWithReferenceSize()
+  {
     var window = TestScene.GetWindow();
 
     Features.FakeOperatingSystem(OSFamily.macOS);
@@ -108,7 +114,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void DescribeScreen() {
+  public void DescribeScreen()
+  {
     Display.Describe(DisplayServer.ScreenOfMainWindow)
       .ShouldBe("[Screen of Main Window]");
     Display.Describe(DisplayServer.ScreenPrimary)
@@ -121,7 +128,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetAutoDisplayScaleMacOS() {
+  public void GetAutoDisplayScaleMacOS()
+  {
     Features.FakeOperatingSystem(OSFamily.macOS);
 
     Display.ScreenGetScale = screen => 2f;
@@ -130,7 +138,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetAutoDisplayScaleZeroSize() {
+  public void GetAutoDisplayScaleZeroSize()
+  {
     Features.FakeOperatingSystem(OSFamily.Windows);
 
     Display.ScreenGetSize = screen => new Vector2I(0, 0);
@@ -139,7 +148,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetAutoDisplayScaleHighDpiLargeScreen() {
+  public void GetAutoDisplayScaleHighDpiLargeScreen()
+  {
     Features.FakeOperatingSystem(OSFamily.Windows);
 
     Display.ScreenGetSize = screen => new Vector2I(3840, 2160);
@@ -149,7 +159,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetAutoDisplayScaleLikelyHighDpiScreen() {
+  public void GetAutoDisplayScaleLikelyHighDpiScreen()
+  {
     Features.FakeOperatingSystem(OSFamily.Windows);
 
     Display.ScreenGetSize = screen => new Vector2I(3840, 2160);
@@ -159,7 +170,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetAutoDisplayScaleUnknown() {
+  public void GetAutoDisplayScaleUnknown()
+  {
     Features.FakeOperatingSystem(OSFamily.Windows);
 
     Display.ScreenGetSize = screen => new Vector2I(1920, 1080);
@@ -169,7 +181,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void ConstrainsVector() {
+  public void ConstrainsVector()
+  {
     Vector2 size = Display.FullHD;
     var aspect = size.Aspect();
 
@@ -182,7 +195,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void ConstrainsIfHeightIsBelowMinSize() {
+  public void ConstrainsIfHeightIsBelowMinSize()
+  {
     // A wide aspect ratio so that after clamping width,
     // the computed height will drop below the minimum.
     var size = new Vector2(1000, 100);
@@ -197,7 +211,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void ConstrainsIfHeightIsAboveMaxSize() {
+  public void ConstrainsIfHeightIsAboveMaxSize()
+  {
     // A tall aspect ratio (width < height) so that the first pass
     // yields a height above the maximum.
     var size = new Vector2(400, 900);
@@ -212,7 +227,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetWindowSizeInfoUsingAspectRatio() {
+  public void GetWindowSizeInfoUsingAspectRatio()
+  {
     ProjectSettings.SetSetting(
       "display/window/size/window_width_override", Display.FullHD.X
     );
@@ -233,7 +249,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void GetWindowSizeInfoWithoutUsingAspectRatio() {
+  public void GetWindowSizeInfoWithoutUsingAspectRatio()
+  {
     var info = Display.GetWindowSizeInfo(
         Display.FullHD,
         useProjectAspectRatio: false,
@@ -247,7 +264,8 @@ public class DisplayTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void LookGood() {
+  public void LookGood()
+  {
     var window = TestScene.GetWindow();
 
     window.LookGood(

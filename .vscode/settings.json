@@ -20,6 +20,7 @@
   // solution to open.
   "dotnet.defaultSolution": "Chickensoft.GameTools.sln",
   "dotnet.server.useOmnisharp": false,
+  "editor.rulers": [80, 120],
   "editor.semanticHighlighting.enabled": true,
   // C# doc comment colorization gets lost with semantic highlighting, but we
   // need semantic highlighting for proper syntax highlighting with record

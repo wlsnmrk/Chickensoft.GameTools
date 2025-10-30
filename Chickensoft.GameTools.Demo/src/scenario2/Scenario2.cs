@@ -3,12 +3,14 @@ namespace Chickensoft.GameTools.Demo;
 using Chickensoft.GameTools.Displays;
 using Godot;
 
-public partial class Scenario2 : Control {
+public partial class Scenario2 : Control
+{
   private bool _isFullscreen;
 
   public Vector2I BaseResolution => Display.UHD4k;
 
-  public override void _Ready() {
+  public override void _Ready()
+  {
     var window = GetWindow();
 
     GetNode<Button>("%ToggleButton").Pressed += ToggleFullscreen;
@@ -21,15 +23,18 @@ public partial class Scenario2 : Control {
     SetFullscreen(_isFullscreen);
   }
 
-  public override void _Input(InputEvent @event) {
-    if (Input.IsActionJustReleased("fullscreen_toggle")) {
+  public override void _Input(InputEvent @event)
+  {
+    if (Input.IsActionJustReleased("fullscreen_toggle"))
+    {
       ToggleFullscreen();
     }
   }
 
   public void ToggleFullscreen() => SetFullscreen(!_isFullscreen);
 
-  public void SetFullscreen(bool isFullscreen) {
+  public void SetFullscreen(bool isFullscreen)
+  {
     _isFullscreen = isFullscreen;
 
     var info = GetWindow().LookGood(

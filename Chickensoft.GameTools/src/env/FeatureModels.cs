@@ -1,7 +1,10 @@
 namespace Chickensoft.GameTools.Environment;
 
+using System.Diagnostics.CodeAnalysis;
+
 /// <summary>Operating system family.</summary>
-public enum OSFamily {
+public enum OSFamily
+{
   /// <summary>Windows operating system family.</summary>
   Windows,
   /// <summary>Linux operating system family.</summary>
@@ -17,7 +20,8 @@ public enum OSFamily {
 }
 
 /// <summary>Application platform.</summary>
-public enum Platform {
+public enum Platform
+{
   /// <summary>Web platform.</summary>
   Web,
   /// <summary>Desktop platform.</summary>
@@ -29,7 +33,8 @@ public enum Platform {
 }
 
 /// <summary>Interactivity mode.</summary>
-public enum InteractivityMode {
+public enum InteractivityMode
+{
   /// <summary>Realtime (game) mode.</summary>
   Realtime,
   /// <summary>Non-realtime (MovieMode Maker) mode.</summary>
@@ -37,7 +42,8 @@ public enum InteractivityMode {
 }
 
 /// <summary>Build type.</summary>
-public enum BuildType {
+public enum BuildType
+{
   /// <summary>Debug build.</summary>
   Debug,
   /// <summary>Release build.</summary>
@@ -45,7 +51,8 @@ public enum BuildType {
 }
 
 /// <summary>Godot tool environment.</summary>
-public enum ToolEnvironment {
+public enum ToolEnvironment
+{
   /// <summary>Editor (development) environment.</summary>
   Editor,
   /// <summary>Exported application.</summary>
@@ -53,7 +60,15 @@ public enum ToolEnvironment {
 }
 
 /// <summary>Floating point precision.</summary>
-public enum Precision {
+[
+  SuppressMessage(
+    "Naming",
+    "CA1720",
+    Justification = "Represents the named types"
+  )
+]
+public enum Precision
+{
   /// <summary>64-bit precision.</summary>
   Double,
   /// <summary>32-bit precision.</summary>
@@ -61,7 +76,8 @@ public enum Precision {
 }
 
 /// <summary>Hardware architecture bit length.</summary>
-public enum BitLength {
+public enum BitLength
+{
   /// <summary>32-bit architecture.</summary>
   X32,
   /// <summary>64-bit architecture.</summary>
@@ -69,7 +85,8 @@ public enum BitLength {
 }
 
 /// <summary>Hardware architecture.</summary>
-public enum Architecture {
+public enum Architecture
+{
   /// <summary>x86 hardware architecture.</summary>
   X86,
   /// <summary>ARM hardware architecture.</summary>
@@ -83,7 +100,8 @@ public enum Architecture {
 }
 
 /// <summary>Texture compression mode.</summary>
-public enum TextureCompression {
+public enum TextureCompression
+{
   /// <summary>Ericsson texture compression (lossy).</summary>
   Etc,
   /// <summary>Ericsson texture compression (lossy), version 2.</summary>

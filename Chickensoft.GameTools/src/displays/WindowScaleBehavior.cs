@@ -5,7 +5,8 @@ using Godot;
 /// <summary>
 /// Represents how the game window scaling should behave.
 /// </summary>
-public enum WindowScaleBehavior {
+public enum WindowScaleBehavior
+{
   /// <summary>
   /// <para>
   /// UI size is calculated based on the theme design size and the monitor's
