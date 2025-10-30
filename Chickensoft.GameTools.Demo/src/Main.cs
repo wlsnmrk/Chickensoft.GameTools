@@ -3,13 +3,15 @@ namespace Chickensoft.GameTools.Demo;
 using Chickensoft.GameTools.Displays;
 using Godot;
 
-public partial class Main : Control {
+public partial class Main : Control
+{
   public Button Scenario1 { get; set; } = default!;
   public Button Scenario2 { get; set; } = default!;
 
   public static WindowInfo? WindowInfo { get; set; }
 
-  public override void _Ready() {
+  public override void _Ready()
+  {
     var window = GetWindow();
     var scaleInfo = window.GetWindowScaleInfo(Display.UHD4k);
     var sizeInfo = Display.GetWindowSizeInfo(scaleInfo.LogicalResolution);

@@ -5,7 +5,8 @@ using System;
 /// <summary>
 /// Godot feature tags.
 /// </summary>
-public static class Features {
+public static class Features
+{
   // Godot uses feature tags for convenience. Sometimes, it's nice to take the
   // flat tag model and put it back into categories so we can do C# pattern
   // matching in our game code. That's what this file does.
@@ -124,7 +125,8 @@ public static class Features {
   public static TextureCompression TextureCompression =>
     _fakeTextureCompression ?? _textureCompression.Value;
 
-  static Features() {
+  static Features()
+  {
     HasFeatureDefault = Godot.OS.HasFeature;
     HasFeature = HasFeatureDefault;
   }
@@ -132,7 +134,8 @@ public static class Features {
   /// <summary>
   /// Outputs the current application environment features to the Godot console.
   /// </summary>
-  public static void PrintFeatureDiagnostics() {
+  public static void PrintFeatureDiagnostics()
+  {
     Print("-----------------------------------------------------");
     Print("         Application Environment Features");
     Print("-----------------------------------------------------");
@@ -152,7 +155,8 @@ public static class Features {
   /// Resets all fake features and removes the cached values, forcing the
   /// feature values to be recomputed the next time they are requested.
   /// </summary>
-  public static void Reset() {
+  public static void Reset()
+  {
     _fakeOperatingSystem = null;
     _fakePlatform = null;
     _fakeInteractivityMode = null;
@@ -228,7 +232,8 @@ public static class Features {
   internal static Action<string> Print { get; set; } =
     PrintDefault;
 
-  internal static OSFamily GetOperatingSystem() => true switch {
+  internal static OSFamily GetOperatingSystem() => true switch
+  {
     _ when
       HasFeature(WINDOWS) ||
       HasFeature(WINDOWS_WEB) => OSFamily.Windows,
@@ -250,7 +255,8 @@ public static class Features {
     _ => throw new PlatformNotSupportedException()
   };
 
-  internal static Platform GetPlatform() => true switch {
+  internal static Platform GetPlatform() => true switch
+  {
     _ when HasFeature(WEB) => Platform.Web,
     _ when HasFeature(PC) => Platform.Desktop,
     _ when HasFeature(MOBILE) => Platform.Mobile,
@@ -260,36 +266,42 @@ public static class Features {
     _ => Platform.Console
   };
 
-  internal static InteractivityMode GetInteractivityMode() => true switch {
+  internal static InteractivityMode GetInteractivityMode() => true switch
+  {
     _ when HasFeature(MOVIE) => InteractivityMode.MovieMode,
     _ => InteractivityMode.Realtime
   };
 
-  internal static BuildType GetBuildType() => true switch {
+  internal static BuildType GetBuildType() => true switch
+  {
     _ when HasFeature(DEBUG) => BuildType.Debug,
     _ when HasFeature(RELEASE) => BuildType.Release,
     _ => throw new NotSupportedException()
   };
 
-  internal static ToolEnvironment GetToolEnvironment() => true switch {
+  internal static ToolEnvironment GetToolEnvironment() => true switch
+  {
     _ when HasFeature(EDITOR) => ToolEnvironment.Editor,
     _ when HasFeature(TEMPLATE) => ToolEnvironment.ExportTemplate,
     _ => throw new NotSupportedException()
   };
 
-  internal static Precision GetPrecision() => true switch {
+  internal static Precision GetPrecision() => true switch
+  {
     _ when HasFeature(DOUBLE) => Precision.Double,
     _ when HasFeature(SINGLE) => Precision.Single,
     _ => throw new NotSupportedException()
   };
 
-  internal static BitLength GetBitLength() => true switch {
+  internal static BitLength GetBitLength() => true switch
+  {
     _ when HasFeature(X32) => BitLength.X32,
     _ when HasFeature(X64) => BitLength.X64,
     _ => throw new NotSupportedException()
   };
 
-  internal static Architecture GetArchitecture() => true switch {
+  internal static Architecture GetArchitecture() => true switch
+  {
     _ when HasFeature(X86) => Architecture.X86,
     _ when HasFeature(ARM) => Architecture.Arm,
     _ when HasFeature(RISC_V) => Architecture.RiscV,
@@ -298,7 +310,8 @@ public static class Features {
     _ => throw new PlatformNotSupportedException()
   };
 
-  internal static TextureCompression GetTextureCompression() => true switch {
+  internal static TextureCompression GetTextureCompression() => true switch
+  {
     _ when HasFeature(ETC) => TextureCompression.Etc,
     _ when HasFeature(ETC2) => TextureCompression.Etc2,
     _ when HasFeature(S3TC) => TextureCompression.S3TC,

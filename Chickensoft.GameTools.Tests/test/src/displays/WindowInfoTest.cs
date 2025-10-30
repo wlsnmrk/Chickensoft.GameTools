@@ -5,9 +5,11 @@ using Chickensoft.GoDotTest;
 using Godot;
 using Shouldly;
 
-public class WindowInfoTest(Node testScene) : TestClass(testScene) {
+public class WindowInfoTest(Node testScene) : TestClass(testScene)
+{
   [Test]
-  public void ToStringDescription() {
+  public void ToStringDescription()
+  {
     var scaleInfo = new WindowScaleInfo(
       Screen: 1,
       SystemScale: 2.0f,

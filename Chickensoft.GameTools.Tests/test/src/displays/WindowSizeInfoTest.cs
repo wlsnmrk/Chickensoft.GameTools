@@ -5,9 +5,11 @@ using Chickensoft.GoDotTest;
 using Godot;
 using Shouldly;
 
-public class WindowSizeInfoTest(Node testScene) : TestClass(testScene) {
+public class WindowSizeInfoTest(Node testScene) : TestClass(testScene)
+{
   [Test]
-  public void ToStringDescription() {
+  public void ToStringDescription()
+  {
     var sizeInfo = new WindowSizeInfo(
       Size: new Vector2I(1, 2),
       MinSize: new Vector2I(3, 4),

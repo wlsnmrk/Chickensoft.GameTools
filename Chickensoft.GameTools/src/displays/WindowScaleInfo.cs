@@ -57,7 +57,8 @@ public record WindowScaleInfo(
   Vector2I ProjectWindowSize,
   Vector2I NativeResolution,
   Vector2I LogicalResolution
-) {
+)
+{
   /// <inheritdoc />
   public override string ToString() => $"""
   {nameof(Screen)}: {Screen}

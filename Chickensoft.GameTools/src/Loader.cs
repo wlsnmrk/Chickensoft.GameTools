@@ -4,16 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
-
-using ThreadLoadStatus = Godot.ResourceLoader.ThreadLoadStatus;
 using CacheMode = Godot.ResourceLoader.CacheMode;
+using ThreadLoadStatus = Godot.ResourceLoader.ThreadLoadStatus;
 
 /// <summary>
 /// A wrapper around Godot's own <see cref="ResourceLoader" /> which makes it
 /// really simple to load multiple resources at once while tracking progress
 /// and completion.
 /// </summary>
-public interface ILoader : IDisposable {
+public interface ILoader : IDisposable
+{
   /// <summary>Event invoked when the loader begins loading resources.</summary>
   event Action? Started;
 
@@ -78,14 +78,16 @@ public interface ILoader : IDisposable {
 }
 
 /// <summary><inheritdoc cref="ILoader" path="/summary"/></summary>
-public sealed class Loader : ILoader, IDisposable {
+public sealed class Loader : ILoader, IDisposable
+{
   internal abstract class PendingJob(
     Action<object> internalOnComplete,
     string resourcePath,
     string typeHint,
     bool useSubthreads,
     CacheMode cacheMode
-  ) : IEquatable<PendingJob> {
+  ) : IEquatable<PendingJob>
+  {
     public Action<object> InternalOnComplete { get; } = internalOnComplete;
     public string ResourcePath { get; } = resourcePath;
     public string TypeHint { get; } = typeHint;
@@ -146,18 +148,21 @@ public sealed class Loader : ILoader, IDisposable {
     CacheMode cacheMode = CacheMode.Reuse
   );
   internal static LoadThreadedRequestDelegate
-    LoadThreadedRequest { get; set; } = ResourceLoader.LoadThreadedRequest;
+    LoadThreadedRequest
+  { get; set; } = ResourceLoader.LoadThreadedRequest;
 
   internal delegate ThreadLoadStatus LoadThreadedGetStatusDelegate(
       string path, Godot.Collections.Array? progress = null
     );
   internal static LoadThreadedGetStatusDelegate
-    LoadThreadedGetStatus { get; set; } =
+    LoadThreadedGetStatus
+  { get; set; } =
       LoadThreadedGetStatus = ResourceLoader.LoadThreadedGetStatus;
 
   internal delegate Resource LoadThreadedGetDelegate(string path);
   internal static LoadThreadedGetDelegate
-    LoadThreadedGet { get; set; } = ResourceLoader.LoadThreadedGet;
+    LoadThreadedGet
+  { get; set; } = ResourceLoader.LoadThreadedGet;
   #endregion Shims For Testing
 
   /// <inheritdoc />
@@ -167,12 +172,14 @@ public sealed class Loader : ILoader, IDisposable {
     string typeHint = "",
     bool useSubthreads = false,
     CacheMode cacheMode = CacheMode.Reuse
-  ) where T : Resource {
+  ) where T : Resource
+  {
     ObjectDisposedException.ThrowIf(
       _isDisposed, "Cannot add jobs once disposed."
     );
 
-    if (_isRunning) {
+    if (_isRunning)
+    {
       throw new InvalidOperationException("Cannot add jobs while running.");
     }
 
@@ -184,14 +191,17 @@ public sealed class Loader : ILoader, IDisposable {
   }
 
   /// <inheritdoc />
-  public void Load() {
-    if (_isRunning || _isDisposed) { return; }
+  public void Load()
+  {
+    if (_isRunning || _isDisposed)
+    { return; }
 
     _isRunning = true;
 
     _tcs = new();
 
-    foreach (var pendingJob in _pendingJobs) {
+    foreach (var pendingJob in _pendingJobs)
+    {
       LoadThreadedRequest(
         pendingJob.ResourcePath,
         pendingJob.TypeHint,
@@ -205,19 +215,24 @@ public sealed class Loader : ILoader, IDisposable {
   }
 
   /// <inheritdoc />
-  public void Update() {
-    if (_isDisposed || !_isRunning) { return; }
+  public void Update()
+  {
+    if (_isDisposed || !_isRunning)
+    { return; }
 
     UpdateProgress();
   }
 
   /// <inheritdoc />
-  public void Dispose() {
-    if (_isRunning) {
+  public void Dispose()
+  {
+    if (_isRunning)
+    {
       throw new InvalidOperationException("Cannot dispose while running.");
     }
 
-    if (_isDisposed) {
+    if (_isDisposed)
+    {
       return;
     }
 
@@ -229,23 +244,27 @@ public sealed class Loader : ILoader, IDisposable {
     _isDisposed = true;
   }
 
-  private void UpdateProgress() {
+  private void UpdateProgress()
+  {
     _completedJobs.Clear();
 
     var hasProgressChanged = false;
 
-    foreach (var pendingJob in _pendingJobs) {
+    foreach (var pendingJob in _pendingJobs)
+    {
       var status = LoadThreadedGetStatus(
         pendingJob.ResourcePath, _progressArray
       );
       var progress = _progressArray[0].AsSingle();
 
-      if (!Mathf.IsEqualApprox(progress, pendingJob.Progress)) {
+      if (!Mathf.IsEqualApprox(progress, pendingJob.Progress))
+      {
         pendingJob.Progress = progress;
         hasProgressChanged = true;
       }
 
-      if (status == ThreadLoadStatus.InvalidResource) {
+      if (status == ThreadLoadStatus.InvalidResource)
+      {
         var e = new InvalidOperationException(
           $"Failed to load resource '{pendingJob.ResourcePath}' due to an " +
           "invalid resource error."
@@ -254,7 +273,8 @@ public sealed class Loader : ILoader, IDisposable {
         throw e;
       }
 
-      if (status == ThreadLoadStatus.Failed) {
+      if (status == ThreadLoadStatus.Failed)
+      {
         var e = new InvalidOperationException(
           $"Failed to load resource '{pendingJob.ResourcePath}'."
         );
@@ -262,26 +282,31 @@ public sealed class Loader : ILoader, IDisposable {
         throw e;
       }
 
-      if (status == ThreadLoadStatus.Loaded) {
+      if (status == ThreadLoadStatus.Loaded)
+      {
         _completedJobs.Add(pendingJob);
       }
     }
 
-    if (hasProgressChanged) {
+    if (hasProgressChanged)
+    {
       ProgressChanged();
     }
 
-    foreach (var job in _completedJobs) {
+    foreach (var job in _completedJobs)
+    {
       CompleteJob(job);
     }
 
     _completedJobs.Clear();
   }
 
-  private void ProgressChanged() {
+  private void ProgressChanged()
+  {
     var totalProgress = 0f;
 
-    foreach (var pendingJob in _pendingJobs) {
+    foreach (var pendingJob in _pendingJobs)
+    {
       totalProgress += pendingJob.Progress;
     }
 
@@ -290,14 +315,16 @@ public sealed class Loader : ILoader, IDisposable {
     UpdateAndInvokeProgress(totalProgress);
   }
 
-  private void CompleteJob(PendingJob pendingJob) {
+  private void CompleteJob(PendingJob pendingJob)
+  {
     _pendingJobs.Remove(pendingJob);
 
     var result = LoadThreadedGet(pendingJob.ResourcePath);
 
     pendingJob.InternalOnComplete(result);
 
-    if (_pendingJobs.Count == 0) {
+    if (_pendingJobs.Count == 0)
+    {
       // Done with all jobs.
       UpdateAndInvokeProgress(1f);
       _isRunning = false;
@@ -307,7 +334,8 @@ public sealed class Loader : ILoader, IDisposable {
   }
 
   internal void InvokeStarted() => Started?.Invoke();
-  internal void UpdateAndInvokeProgress(float progress) {
+  internal void UpdateAndInvokeProgress(float progress)
+  {
     ProgressPercentage = progress;
     Progress?.Invoke(progress);
   }

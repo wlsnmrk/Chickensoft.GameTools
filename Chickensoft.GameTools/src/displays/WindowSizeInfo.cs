@@ -10,7 +10,8 @@ using Godot;
 /// <param name="MaxSize">Maximum window size.</param>
 public record WindowSizeInfo(
   Vector2I Size, Vector2I MinSize, Vector2I MaxSize
-) {
+)
+{
   /// <inheritdoc />
   public override string ToString() => $"""
   {nameof(Size)}: {Size},

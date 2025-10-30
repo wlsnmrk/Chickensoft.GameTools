@@ -6,9 +6,11 @@ using Chickensoft.GoDotTest;
 using Godot;
 using Shouldly;
 
-public class LoaderTest(Node testScene) : TestClass(testScene) {
+public class LoaderTest(Node testScene) : TestClass(testScene)
+{
   [Test]
-  public async Task LoadsResourcesSuccessfully() {
+  public async Task LoadsResourcesSuccessfully()
+  {
     var res1Path = "res://stuff/scene.tscn";
     var res1 = new PackedScene();
 
@@ -45,11 +47,14 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
 
     onStarted.ShouldBeTrue();
 
-    Loader.LoadThreadedGetStatus = (path, progressArray) => {
-      if (path == res1Path) {
+    Loader.LoadThreadedGetStatus = (path, progressArray) =>
+    {
+      if (path == res1Path)
+      {
         progressArray![0] = 0.25f;
       }
-      else if (path == res2Path) {
+      else if (path == res2Path)
+      {
         progressArray![0] = 0.5f;
       }
       return ResourceLoader.ThreadLoadStatus.InProgress;
@@ -63,18 +68,23 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
     Mathf.IsEqualApprox(progress, (0.5f + 0.25f) / 2f).ShouldBeTrue();
     Mathf.IsEqualApprox(loader.ProgressPercentage, progress).ShouldBeTrue();
 
-    Loader.LoadThreadedGetStatus = (path, progressArray) => {
-      if (path == res1Path) {
+    Loader.LoadThreadedGetStatus = (path, progressArray) =>
+    {
+      if (path == res1Path)
+      {
         progressArray![0] = 0.99f;
       }
-      else if (path == res2Path) {
+      else if (path == res2Path)
+      {
         progressArray![0] = 0.99f;
       }
       return ResourceLoader.ThreadLoadStatus.Loaded;
     };
 
-    Loader.LoadThreadedGet = (path) => {
-      if (path == res1Path) {
+    Loader.LoadThreadedGet = (path) =>
+    {
+      if (path == res1Path)
+      {
         return res1;
       }
 
@@ -102,7 +112,8 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void EncountersInvalidResourceExceptionWhenLoading() {
+  public void EncountersInvalidResourceExceptionWhenLoading()
+  {
     var resPath = "res://stuff/scene.tscn";
 
     var loader = new Loader();
@@ -120,7 +131,8 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void EncountersFailedExceptionWhenLoading() {
+  public void EncountersFailedExceptionWhenLoading()
+  {
     var resPath = "res://stuff/scene.tscn";
 
     var loader = new Loader();
@@ -138,14 +150,16 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void InvokeCompletedDoesNothingWithNoSubscriptions() {
+  public void InvokeCompletedDoesNothingWithNoSubscriptions()
+  {
     var loader = new Loader();
 
     Should.NotThrow(loader.InvokeCompleted);
   }
 
   [Test]
-  public void DisposeThrowsIfRunning() {
+  public void DisposeThrowsIfRunning()
+  {
     var loader = new Loader();
     loader.AddJob<PackedScene>("res://stuff/scene.tscn", (r) => { });
     Loader.LoadThreadedRequest =
@@ -156,7 +170,8 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void DisposeDoesNothingIfDisposed() {
+  public void DisposeDoesNothingIfDisposed()
+  {
     var loader = new Loader();
 
     loader.Dispose();
@@ -165,7 +180,8 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void AddJobThrowsIfRunning() {
+  public void AddJobThrowsIfRunning()
+  {
     var loader = new Loader();
     loader.AddJob<PackedScene>("res://stuff/scene.tscn", (r) => { });
     Loader.LoadThreadedRequest =
@@ -178,7 +194,8 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void LoadDoesNothingIfRunning() {
+  public void LoadDoesNothingIfRunning()
+  {
     var loader = new Loader();
     loader.AddJob<PackedScene>("res://stuff/scene.tscn", (r) => { });
     Loader.LoadThreadedRequest =
@@ -189,7 +206,8 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void LoadDoesNothingIfDisposed() {
+  public void LoadDoesNothingIfDisposed()
+  {
     var loader = new Loader();
     loader.Dispose();
 
@@ -197,14 +215,16 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
   }
 
   [Test]
-  public void UpdateDoesNothingIfNotRunning() {
+  public void UpdateDoesNothingIfNotRunning()
+  {
     var loader = new Loader();
 
     Should.NotThrow(loader.Update);
   }
 
   [Test]
-  public void UpdateDoesNothingIfDisposed() {
+  public void UpdateDoesNothingIfDisposed()
+  {
     var loader = new Loader();
 
     loader.Dispose();
@@ -215,9 +235,11 @@ public class LoaderTest(Node testScene) : TestClass(testScene) {
 
 
 
-public class PendingJobTest(Node testScene) : TestClass(testScene) {
+public class PendingJobTest(Node testScene) : TestClass(testScene)
+{
   [Test]
-  public void Equality() {
+  public void Equality()
+  {
     var job = new Loader.PendingJob<PackedScene>(
       "res://stuff/scene.tscn",
       (r) => { },
